@@ -1,0 +1,8 @@
+require 'pod/command/package_bj'
+require 'cocoapods-packager-bj/user_interface/build_failed_report'
+require 'cocoapods-packager-bj/builder'
+require 'cocoapods-packager-bj/framework'
+require 'cocoapods-packager-bj/mangle'
+require 'cocoapods-packager-bj/pod_utils'
+require 'cocoapods-packager-bj/spec_builder'
+require 'cocoapods-packager-bj/symbols'
