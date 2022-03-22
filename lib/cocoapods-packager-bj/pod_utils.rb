@@ -31,6 +31,9 @@ module Pod
             target.build_configurations.each do |config|
               config.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
               config.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
+              if modules
+                config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+              end
             end
           end
           static_installer.pods_project.save
