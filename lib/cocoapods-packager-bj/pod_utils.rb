@@ -22,10 +22,15 @@ module Pod
           @spec_sources,
           modules
         )
-
+        
         static_installer = Installer.new(sandbox, podfile)
         static_installer.install!
-
+        spec_targets = static_installer.pod_targets.select do |target|
+          target.name == @spec.name
+        end
+        static_target = spec_targets[0]
+        source_dir = Dir.pwd
+        UI.puts("build project in directory #{source_dir}")
         unless static_installer.nil?
           static_installer.pods_project.targets.each do |target|
             target.build_configurations.each do |config|
@@ -38,7 +43,6 @@ module Pod
           end
           static_installer.pods_project.save
         end
-
         static_installer
       end
 
@@ -54,7 +58,8 @@ module Pod
         options[:subspecs] = subspecs if subspecs
         Pod::Podfile.new do
           if modules
-            use_frameworks!
+            Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+            use_frameworks!(:linkage => :static)
           end
           sources.each { |s| source s }
           platform(platform_name, deployment_target)

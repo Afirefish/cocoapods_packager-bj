@@ -380,7 +380,19 @@ MAP
             
         Dir.glob("#{modules_sim_sourceinfo_root}/**/*.swiftsourceinfo").
           each { |h| `ditto #{h} #{@fwk.swiftsourceinfo_path}/#{h.sub(modules_sim_sourceinfo_root, '')}` }
-              
+        
+        oc_headers_source_root = "#{@public_headers_root}/#{@spec.name}"
+        Dir.glob("#{oc_headers_source_root}/**/*.h").
+          each { |h| `ditto #{h} #{@fwk.headers_path}/#{h.sub(oc_headers_source_root, '')}` }
+
+        if Dir.glob("#{@fwk.swiftsourceinfo_path}/*").empty?
+          FileUtils.rm_rf("#{@fwk.swiftsourceinfo_path}")
+        end  
+
+        if Dir.glob("#{@fwk.swiftmodule_path}/*").empty?
+          FileUtils.rm_rf("#{@fwk.swiftmodule_path}")
+        end  
+
     end
     
   end
