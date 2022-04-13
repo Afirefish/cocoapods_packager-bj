@@ -347,6 +347,22 @@ MAP
         copy_module_headers
         copy_license
         copy_resources
+
+        build_xcframework
+    end
+
+    def build_xcframework
+      UI.puts("Building xcframework #{@spec} with configuration #{@config}")
+
+      defines = compile
+      build_sim_libraries(defines)
+      output = @fwk.xcframework_path.to_s
+
+      build_xcframework_for_ios(output)
+    end
+
+    def build_xcframework_for_ios(output) 
+      `xcodebuild -create-xcframework -framework #{@static_sandbox_root}/build/#{@spec.name}.framework -framework #{@static_sandbox_root}/build-sim/#{@spec.name}.framework -output #{output}`
     end
     
     def build_module_framework_for_ios(output)

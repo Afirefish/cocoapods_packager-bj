@@ -7,6 +7,7 @@ module BJFramework
     attr_reader :versions_path
     attr_reader :swiftmodule_path
     attr_reader :swiftsourceinfo_path
+    attr_reader :xcframework_path
 
     def delete_resources
       Pathname.new(@resources_path).rmtree
@@ -41,6 +42,9 @@ module BJFramework
     def make_framework
       @fwk_path = @root_path + Pathname.new(@name + '.framework')
       @fwk_path.mkdir unless @fwk_path.exist?
+
+      @xcframework_path = @root_path + Pathname.new(@name + '.xcframework')
+      @xcframework_path.mkpath unless @xcframework_path.exist?
 
       @module_map_path = @fwk_path + Pathname.new('Modules')
       @versions_path = @fwk_path + Pathname.new('Versions/A')
