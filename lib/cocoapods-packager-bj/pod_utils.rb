@@ -20,7 +20,8 @@ module Pod
           @spec.deployment_target(platform_name),
           @subspecs,
           @spec_sources,
-          modules
+          modules,
+          @usetrunk
         )
         
         static_installer = Installer.new(sandbox, podfile)
@@ -46,7 +47,7 @@ module Pod
         static_installer
       end
 
-      def podfile_from_spec(path, spec_name, platform_name, deployment_target, subspecs, sources, modules)
+      def podfile_from_spec(path, spec_name, platform_name, deployment_target, subspecs, sources, modules, usetrunk)
         options = {}
         if path
           if @local
@@ -61,7 +62,9 @@ module Pod
             Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
             use_frameworks!(:linkage => :static)
           end
-          sources.each { |s| source s }
+          if !usetrunk 
+            sources.each { |s| source s }
+          end
           platform(platform_name, deployment_target)
           pod(spec_name, options)
 
